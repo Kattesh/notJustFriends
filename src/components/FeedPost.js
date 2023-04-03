@@ -2,15 +2,23 @@ import {Image, Pressable, StyleSheet, Text, View} from "react-native";
 import {AntDesign, Entypo, FontAwesome5, MaterialCommunityIcons,} from "@expo/vector-icons";
 import LikeImage from './../../assets/images/like.png'
 import {useState} from "react";
+import {useNavigation} from "@react-navigation/native";
 
+const dummy_img =
+    "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/user.png";
 const FeedPost = ({post}) => {
     const [isLiked, setIsLiked] = useState(false)
+    const [user, setUser] = useState(null);
+    const navigation = useNavigation();
+
     return (
         <View style={styles.post}>
 
-            <View style={styles.header}>
+            <Pressable
+                onPress={() => navigation.navigate("Profile", {id: post.User?.id})}
+                style={styles.header}>
                 <Image
-                    source={{uri: post.User.image}}
+                    source={{uri: dummy_img}}
                     style={styles.profileImage}/>
                 <View>
                     <Text style={styles.name}>{post.User.name}</Text>
@@ -21,7 +29,7 @@ const FeedPost = ({post}) => {
                     size={18}
                     color="gray"
                     style={styles.icon}/>
-            </View>
+            </Pressable>
 
             {post.description && (
                 <Text style={styles.description}>{post.description}</Text>
@@ -50,8 +58,8 @@ const FeedPost = ({post}) => {
                             size={18}
                             color={isLiked ? "royalblue" : "gray"}/>
                         <Text style={[
-                                styles.iconButtonText,
-                                { color: isLiked ? "royalblue" : "gray" },]}>Like
+                            styles.iconButtonText,
+                            {color: isLiked ? "royalblue" : "gray"},]}>Like
                         </Text>
                     </Pressable>
                     <View style={styles.iconButton}>
